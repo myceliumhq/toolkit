@@ -1,0 +1,9 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./packages/embed" },
+    { "path": "./packages/index" },
+    { "path": "./packages/mcp" },
+    { "path": "./packages/toolkit" }
+  ]
+}

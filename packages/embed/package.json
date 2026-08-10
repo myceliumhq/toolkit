@@ -1,0 +1,51 @@
+{
+  "name": "@myceliumhq/embed",
+  "version": "0.1.0",
+  "description": "Pluggable embedding client for any OpenAI-compatible endpoint (OpenAI, OpenRouter, Ollama, vLLM, LM Studio, ...), with an opt-in local CPU embedding fallback.",
+  "type": "module",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "typecheck": "tsc -p tsconfig.test.json",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "test": "vitest run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/myceliumhq/toolkit.git",
+    "directory": "packages/embed"
+  },
+  "keywords": [
+    "embeddings",
+    "openai-compatible",
+    "openrouter",
+    "llm",
+    "local-inference"
+  ],
+  "dependencies": {
+    "@ai-sdk/openai-compatible": "^3.0.17",
+    "ai": "^7.0.42"
+  },
+  "optionalDependencies": {
+    "@huggingface/transformers": "^4.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
+  }
+}

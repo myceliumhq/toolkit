@@ -1,0 +1,25 @@
+{
+  "name": "toolkit",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Shared runtime packages behind myceliumhq's CLIs: agent-facing CLI conventions, an embedding client, and a local-first semantic index.",
+  "type": "module",
+  "packageManager": "pnpm@11.20.0",
+  "engines": {
+    "node": "^20.0.0 || ^22.0.0 || >=24.0.0"
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "tsc -b --clean",
+    "typecheck": "pnpm -r --if-present run typecheck",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "test": "pnpm -r --if-present run test"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.6",
+    "@myceliumhq/dev-config": "^0.1.0",
+    "@types/node": "^26.1.1",
+    "typescript": "7.0.2"
+  }
+}

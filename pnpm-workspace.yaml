@@ -1,0 +1,16 @@
+packages:
+  - "packages/*"
+
+# sqlite-vec ships a platform-specific native binary for @myceliumhq/index's
+# vector store; onnxruntime-node/sharp are @huggingface/transformers' native
+# deps for @myceliumhq/embed's optional local embedding provider. esbuild
+# comes in transitively via vitest.
+allowBuilds:
+  esbuild: true
+  onnxruntime-node: true
+  protobufjs: true
+  sharp: true
+  sqlite-vec: true
+
+minimumReleaseAgeExclude:
+  - '@myceliumhq/dev-config@0.1.0'

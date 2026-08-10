@@ -1,0 +1,7 @@
+{
+  "extends": "@myceliumhq/dev-config/tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "isolatedModules": true
+  }
+}

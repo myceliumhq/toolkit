@@ -1,0 +1,45 @@
+{
+  "name": "@myceliumhq/toolkit",
+  "version": "0.1.0",
+  "description": "Shared conventions for agent-facing CLIs: exit codes, JSON/table output, config loading, Commander.js wiring, and doctor helpers.",
+  "type": "module",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "typecheck": "tsc -p tsconfig.test.json",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "test": "vitest run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/myceliumhq/toolkit.git",
+    "directory": "packages/toolkit"
+  },
+  "keywords": [
+    "cli",
+    "agent",
+    "conventions"
+  ],
+  "devDependencies": {
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
+  },
+  "dependencies": {
+    "commander": "^15.0.0"
+  }
+}
