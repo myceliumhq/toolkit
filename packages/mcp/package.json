@@ -1,7 +1,7 @@
 {
   "name": "@myceliumhq/mcp",
   "version": "0.1.0",
-  "description": "Bridge agent-tool factories (OpenClaw's AnyAgentTool shape) onto a standalone MCP server, over stdio and Streamable HTTP.",
+  "description": "Bridge agent-tool factories onto a standalone MCP server, over stdio and Streamable HTTP.",
   "type": "module",
   "license": "MIT",
   "publishConfig": {

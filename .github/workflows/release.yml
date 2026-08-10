@@ -1,0 +1,52 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  release:
+    strategy:
+      # One package's release failing shouldn't block the others -- each
+      # is independently versioned.
+      fail-fast: false
+      matrix:
+        package: [toolkit, embed, index, mcp]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      # Required for npm trusted publishing (OIDC) -- npm validates the
+      # trusted-publisher config against this file (org/repo/workflow
+      # filename), same as every other myceliumhq repo's release.yml. Each
+      # of the 4 packages here needs its own trusted-publisher entry on
+      # npmjs.com pointing at this same file.
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm run build
+
+      - run: pnpm run test
+
+      # semantic-release-monorepo (this package's own .releaserc.json)
+      # scopes commit analysis and the release tag to this one package's
+      # directory -- otherwise plain semantic-release would misattribute
+      # every commit in the repo to every package, since all 4 share one
+      # git history.
+      - run: npx semantic-release
+        working-directory: packages/${{ matrix.package }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

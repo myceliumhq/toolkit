@@ -24,10 +24,12 @@ export interface ToolAnnotations {
   openWorldHint?: boolean;
 }
 
-// Structural subset of OpenClaw's AnyAgentTool — no runtime dependency on
-// openclaw itself. `parameters` is already JSON Schema (true of TypeBox
-// output). execute()'s signature matches AnyAgentTool's exactly so real tool
-// factories can be passed in unmodified.
+// A minimal tool shape this bridge needs -- no dependency on any
+// particular agent-tool convention. `parameters` is already JSON Schema
+// (true of TypeBox output). A host's own richer tool type (name, label,
+// description, parameters, execute(toolCallId, params, signal?)) is
+// structurally compatible as long as `execute`'s signature matches, so
+// real tool factories can be passed in unmodified.
 export interface BridgeableTool<TParams = unknown, TDetails = unknown> {
   name: string;
   description: string;

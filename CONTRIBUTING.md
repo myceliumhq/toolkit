@@ -1,0 +1,39 @@
+# Contributing
+
+## Dev setup
+
+```bash
+pnpm install
+pnpm run build
+pnpm run typecheck
+pnpm run lint
+pnpm run test
+```
+
+## Commit messages
+
+This repo releases via [semantic-release](https://semantic-release.gitbook.io/semantic-release/):
+every commit message on `main` must follow [Conventional Commits](https://www.conventionalcommits.org/).
+There is no manual version bump -- don't edit `version` in any package's `package.json`.
+
+| Prefix | Effect |
+| --- | --- |
+| `fix: ...` | patch release |
+| `feat: ...` | minor release |
+| `feat!: ...` or a `BREAKING CHANGE:` footer | major release |
+| `chore:`, `docs:`, `refactor:`, `test:`, `ci:` | no release |
+
+## Release process
+
+This repo ships 4 independently-versioned packages from one git history. Merging to `main` runs
+[`.github/workflows/release.yml`](./.github/workflows/release.yml), a matrix job that runs
+`semantic-release` once per package directory. Each package's own `.releaserc.json` extends
+[`semantic-release-monorepo`](https://github.com/semantic-release/monorepo), which scopes commit
+analysis and the release tag to that package's own directory -- otherwise plain `semantic-release`
+would misattribute every commit in the repo to every package.
+
+Publishing uses npm's [trusted publishing](https://docs.npmjs.com/trusted-publishers) (OIDC) -- no
+token secret. Each of `@myceliumhq/toolkit`, `@myceliumhq/embed`, `@myceliumhq/index`,
+`@myceliumhq/mcp` needs its own Trusted Publisher configured on npmjs.com (Settings → Trusted
+Publishing) pointing at this repo and `.github/workflows/release.yml` -- npm validates against
+this workflow file, so a renamed/moved file needs updating there too for all 4 packages.
