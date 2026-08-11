@@ -10,6 +10,16 @@ jobs:
       # One package's release failing shouldn't block the others -- each
       # is independently versioned.
       fail-fast: false
+      # Sequential, not parallel -- @semantic-release/git commits the
+      # version bump straight to `main`, and 4 packages sharing one repo
+      # means 4 parallel jobs all pushing to that same branch. Live-hit:
+      # with the default unlimited parallelism, 3 of 4 packages' releases
+      # silently no-op'd ("the local branch main is behind the remote
+      # one, therefore a new version won't be published" -- a real
+      # safety check, not an error, so the run still reports success)
+      # because another package's job pushed first. Only one job can
+      # safely commit at a time.
+      max-parallel: 1
       matrix:
         package: [toolkit, embed, index, mcp]
     runs-on: ubuntu-latest
