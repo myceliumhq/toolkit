@@ -44,3 +44,12 @@ token secret. Each of `@myceliumhq/toolkit`, `@myceliumhq/embed`, `@myceliumhq/i
 `@myceliumhq/mcp` needs its own Trusted Publisher configured on npmjs.com (Settings → Trusted
 Publishing) pointing at this repo and `.github/workflows/release.yml` -- npm validates against
 this workflow file, so a renamed/moved file needs updating there too for all 4 packages.
+
+Each package's `.releaserc.json` includes `@semantic-release/git`, committing the version bump
+straight back to `package.json` on `main` -- the matrix's `max-parallel: 1` exists specifically so
+those 4 packages' commits don't race pushing to the same branch (semantic-release aborts a release
+rather than risk publishing from a stale checkout: "the local branch main is behind the remote
+one"). That abort is silent -- the job still reports success. If a package's release needs
+retriggering, push a new commit; don't use "re-run this workflow" from the Actions UI/`gh run
+rerun` -- it replays the *original* triggering commit, which by then is behind whatever the other
+packages' release commits already pushed to `main`, hitting the exact same silent-abort.
