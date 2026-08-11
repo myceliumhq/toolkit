@@ -1,6 +1,6 @@
 {
   "name": "@myceliumhq/index",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Local-first semantic index: sqlite-vec vector store, incremental content-hash sync, and hybrid lexical/semantic search via Reciprocal Rank Fusion.",
   "type": "module",
   "license": "MIT",
