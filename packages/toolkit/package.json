@@ -1,6 +1,6 @@
 {
   "name": "@myceliumhq/toolkit",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Shared conventions for agent-facing CLIs: exit codes, JSON/table output, config loading, Commander.js wiring, and doctor helpers.",
   "type": "module",
   "license": "MIT",
