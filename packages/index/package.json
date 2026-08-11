@@ -39,7 +39,7 @@
     "rrf"
   ],
   "dependencies": {
-    "@myceliumhq/embed": "workspace:*",
+    "@myceliumhq/embed": "^1.0.0",
     "sqlite-vec": "^0.1.9"
   },
   "devDependencies": {

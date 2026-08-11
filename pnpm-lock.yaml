@@ -53,8 +53,8 @@ importers:
   packages/index:
     dependencies:
       '@myceliumhq/embed':
-        specifier: workspace:*
-        version: link:../embed
+        specifier: ^1.0.0
+        version: 1.0.0(zod@4.4.3)
       sqlite-vec:
         specifier: ^0.1.9
         version: 0.1.9
@@ -384,6 +384,9 @@ packages:
 
   '@myceliumhq/dev-config@0.1.0':
     resolution: {integrity: sha512-rw4P38GFwx2D25DO0pv2ItATJaIlCLmNod+U6DYSzMZ8we+/YbVR8Z2W24UHw4HEDOGY86F8/1My3F8dD6xJzQ==}
+
+  '@myceliumhq/embed@1.0.0':
+    resolution: {integrity: sha512-Qj6BeKbIYOOTc82fFKphOSNh7MgmrED2KyvtixEg7LENOpJaF9HDMInBgDtgpn0yWUlp7SxbdafPBGns34IciA==}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -3053,6 +3056,15 @@ snapshots:
       - supports-color
 
   '@myceliumhq/dev-config@0.1.0': {}
+
+  '@myceliumhq/embed@1.0.0(zod@4.4.3)':
+    dependencies:
+      '@ai-sdk/openai-compatible': 3.0.28(zod@4.4.3)
+      ai: 7.0.58(zod@4.4.3)
+    optionalDependencies:
+      '@huggingface/transformers': 4.2.0
+    transitivePeerDependencies:
+      - zod
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
