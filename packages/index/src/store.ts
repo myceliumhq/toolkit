@@ -276,6 +276,15 @@ export class SemanticIndexStore {
     return row.n;
   }
 
+  // Every source id currently stored, for reconcile() to diff against an
+  // adapter's live id set -- see reconcile.ts.
+  listSourceIds(): string[] {
+    const rows = this.db.prepare("SELECT source_id FROM semantic_sources").all() as {
+      source_id: string;
+    }[];
+    return rows.map((row) => row.source_id);
+  }
+
   private withTransaction(fn: () => void): void {
     this.db.exec("BEGIN IMMEDIATE");
     try {
