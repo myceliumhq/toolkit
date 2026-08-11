@@ -33,8 +33,12 @@ export interface RunSyncParams<TId extends string | number> {
 type ChangedItem<TId> = { id: TId; contentHash: string; modifiedAt: string };
 
 // One incremental pass: pulls changes since the stored watermark (unset on
-// first run — a full backfill) from the adapter, newest-first, short-
-// circuits re-embedding when the adapter's own contentHash is unchanged, and
+// first run — a full backfill) from the adapter, oldest-first (the
+// watermark is set to the last item of each processed page, so an adapter
+// must yield in ascending modifiedAt order for that to be a valid
+// resumption point -- see each adapter's own listChanged for how it
+// enforces this), short-circuits re-embedding when the adapter's own
+// contentHash is unchanged, and
 // chunks+embeds+stores the rest. Bounded to maxItemsPerSync per call so one
 // pass can't run unbounded; the watermark only advances once a full page of
 // concurrent work completes, so an interrupted run re-attempts at most one

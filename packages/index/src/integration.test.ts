@@ -34,7 +34,13 @@ function embed(text: string, dimensions: number): number[] {
 
 type FakeItem = { id: number; contentHash: string; modifiedAt: string; content: string };
 
-function fakeAdapter(items: FakeItem[]): SourceAdapter<number> {
+// `withListAllIds: true` makes the fixture mutable list `items` the live
+// source of truth for reconcile() tests -- listAllIds re-reads it on every
+// call, so a test can splice an item out and see reconcile() react.
+function fakeAdapter(
+  items: FakeItem[],
+  opts: { withListAllIds?: boolean } = {},
+): SourceAdapter<number> {
   return {
     name: "fake",
     async *listChanged(since) {
@@ -51,6 +57,13 @@ function fakeAdapter(items: FakeItem[]): SourceAdapter<number> {
       if (!item) throw new Error(`no such item: ${id}`);
       return item.content;
     },
+    ...(opts.withListAllIds
+      ? {
+          async *listAllIds() {
+            for (const item of items) yield item.id;
+          },
+        }
+      : {}),
   };
 }
 
@@ -140,6 +153,37 @@ describe("openSemanticIndex + sync + search (real sqlite-vec)", () => {
     const second = await index.sync(adapter);
     expect(second.processed).toBe(1);
     expect(second.skippedUnchanged).toBe(0);
+  });
+
+  test("reconcile is a no-op when the adapter has no listAllIds", async () => {
+    const index = await open();
+    const adapter = fakeAdapter([
+      { id: 1, contentHash: "h1", modifiedAt: "2026-01-01T00:00:00Z", content: "hello" },
+    ]);
+    await index.sync(adapter);
+
+    const result = await index.reconcile(adapter);
+    expect(result).toEqual({ supported: false, checked: 0, deleted: 0 });
+    expect(index.sourceCount()).toBe(1);
+  });
+
+  test("reconcile purges sources the adapter no longer lists, and leaves live ones alone", async () => {
+    const index = await open();
+    const items: FakeItem[] = [
+      { id: 1, contentHash: "h1", modifiedAt: "2026-01-01T00:00:00Z", content: "keep me" },
+      { id: 2, contentHash: "h2", modifiedAt: "2026-01-02T00:00:00Z", content: "delete me" },
+    ];
+    const adapter = fakeAdapter(items, { withListAllIds: true });
+    await index.sync(adapter);
+    expect(index.sourceCount()).toBe(2);
+
+    items.splice(1, 1); // source 2 deleted at the source, source 1 still live
+
+    const result = await index.reconcile(adapter);
+    expect(result).toEqual({ supported: true, checked: 1, deleted: 1 });
+    expect(index.sourceCount()).toBe(1);
+
+    expect(await index.search("keep", 5)).not.toEqual([]);
   });
 
   test("search returns nothing before any sync, and fails open on an empty term", async () => {

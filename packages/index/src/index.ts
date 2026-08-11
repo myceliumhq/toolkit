@@ -1,4 +1,5 @@
 import type { EmbeddingProvider } from "@myceliumhq/embed";
+import { type ReconcileSummary, runReconcile } from "./reconcile.js";
 import { searchSemantic } from "./search.js";
 import { type OpenStoreResult, SemanticIndexStore } from "./store.js";
 import { runIncrementalSync, type SyncLogger, type SyncSummary } from "./sync.js";
@@ -17,6 +18,13 @@ export interface SourceAdapter<TId extends string | number> {
     since: string | undefined,
   ): AsyncIterable<{ id: TId; contentHash: string; modifiedAt: string }>;
   fetchContent(id: TId): Promise<string>;
+  // Every id that currently exists at the source, for reconcile() to diff
+  // against what's stored and purge anything no longer there. Optional
+  // because listChanged/fetchContent alone are enough for keeping content
+  // up to date -- this is only needed to detect deletions, which a source
+  // whose API silently omits removed items from its "changed" feed (no
+  // tombstones) can't otherwise signal. Omit it and reconcile() is a no-op.
+  listAllIds?(): AsyncIterable<TId>;
 }
 
 export interface RankedHit<TId> {
@@ -115,6 +123,12 @@ export class SemanticIndex {
     });
   }
 
+  // Deletion backstop -- see reconcile.ts's own doc comment. A no-op
+  // (`supported: false`) if the adapter has no listAllIds.
+  reconcile<TId extends string | number>(adapter: SourceAdapter<TId>): Promise<ReconcileSummary> {
+    return runReconcile(adapter, this.store);
+  }
+
   search(
     searchTerm: string | undefined,
     limit: number,
@@ -142,6 +156,7 @@ export class SemanticIndex {
 }
 
 export { type Chunk, type ChunkOptions, chunkText } from "./chunking.js";
+export { type ReconcileSummary, runReconcile } from "./reconcile.js";
 export { type SearchDeps, searchSemantic } from "./search.js";
 export { type OpenStoreResult, SemanticIndexStore } from "./store.js";
 export {
