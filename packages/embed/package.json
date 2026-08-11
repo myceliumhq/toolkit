@@ -1,6 +1,6 @@
 {
   "name": "@myceliumhq/embed",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Pluggable embedding client for any OpenAI-compatible endpoint (OpenAI, OpenRouter, Ollama, vLLM, LM Studio, ...), with an opt-in local CPU embedding fallback.",
   "type": "module",
   "license": "MIT",
