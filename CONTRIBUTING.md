@@ -23,6 +23,13 @@ There is no manual version bump -- don't edit `version` in any package's `packag
 | `feat!: ...` or a `BREAKING CHANGE:` footer | major release |
 | `chore:`, `docs:`, `refactor:`, `test:`, `ci:` | no release |
 
+Never spell out GitHub's own skip-CI marker (the bracketed "skip" + "ci" pair) literally in a
+commit message unless you actually want that push to skip every workflow -- GitHub matches it as
+a plain substring anywhere in the message, including inside a sentence explaining what it does.
+Live-hit: a commit message here that merely *described* `@semantic-release/git`'s own skip-CI
+commit template ended up skip-CI'd itself, since the marker text appeared verbatim in the
+explanation.
+
 ## Release process
 
 This repo ships 4 independently-versioned packages from one git history. Merging to `main` runs
