@@ -1,6 +1,6 @@
 {
   "name": "@myceliumhq/mcp",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Bridge agent-tool factories onto a standalone MCP server, over stdio and Streamable HTTP.",
   "type": "module",
   "license": "MIT",
