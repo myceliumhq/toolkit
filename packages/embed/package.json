@@ -38,14 +38,14 @@
     "local-inference"
   ],
   "dependencies": {
-    "@ai-sdk/openai-compatible": "^3.0.17",
-    "ai": "^7.0.42"
+    "@ai-sdk/openai-compatible": "^3.0.90",
+    "ai": "^7.0.170"
   },
   "optionalDependencies": {
-    "@huggingface/transformers": "^4.2.0"
+    "@huggingface/transformers": "^4.3.2"
   },
   "devDependencies": {
     "typescript": "^7.0.2",
-    "vitest": "^4.1.10"
+    "vitest": "^4.1.12"
   }
 }
